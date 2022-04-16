@@ -1,11 +1,11 @@
 # sketch基类
 import Utility.Hash
 class _Basic_Sketch:
-    def __init__(self,d,w,active):
+    def __init__(self,d,wk,active):
         # 哈希表长宽
         self.active = active
         self.d = d
-        self.w = w
+        self.w = wk
         # 哈希表    二维数组
         self.sketch_table=[]
         # 工具类
@@ -19,7 +19,14 @@ class _Basic_Sketch:
         for i in range (0,self.d):
             self.sketch_table.append( [0 for x in range(0, self.w)])
     
-    def Receive_packet(packet):
+    def Receive_packet(self,packet,scope,wj):
+        for i in range(0,self.d):
+            hf = self.hash_function[i]
+            hash = hf()
+            if hash >= scope[0]+1 and hash <= scope[1]:
+                index = 1+(hash-scope[0]-1)*wj/(scope[1] - scope[0] -1)
+                self.sketch_table[i][index] += 1
+
         
 
 
