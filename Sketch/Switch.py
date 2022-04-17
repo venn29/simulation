@@ -5,7 +5,7 @@ class _Switch:
     def __init__(self,switchid,d,ws):
         # 用来存放sketch
         self.d = d
-        self.wk = ws
+        self.ws = ws
         self.Initiate_Active_Sketch(self,d,ws,True)
         self.Initiate_Idle_Sketch(self,d,ws,False)
         # 后续用来存放deviation的packet
@@ -20,7 +20,7 @@ class _Switch:
 
     # 返回对应sketch上的sketch_table内容，列表返回，比如d=2，w=3返回[[1,2,3],[1,2,3]]
 
-    def Query(self,path_ID):
+    def Query(self):
         ans =  self.active_sketch.sketch_table.clone()
         self.active_sketch = self.inactive_sketch
         self.inactive_sketch = Sketch.BasicSketch._Basic_Sketch(self.d,self.wk,False)
@@ -36,7 +36,7 @@ class _Switch:
             pass
     # 接收包，判断是否路径正确
     def Receive(self,packet):
-        if self.switch_ID in packet.flow.path:
+        if packet.flow.flowInfo.pathID in self.scope.keys():
             return True
         else:
             return False
@@ -44,5 +44,5 @@ class _Switch:
     # 生成一个新的Sketch,d,w为参数
     def Initiate_Active_Sketch(self,d,ws):
         self.active_sketch = Sketch.BasicSketch._Basic_Sketch(d,ws,True)
-    def Initiate_Idle_Sketch(self,d,w):
+    def Initiate_Idle_Sketch(self,d,ws):
         self.inactive_sketch = Sketch.BasicSketch._Basic_Sketch(d,ws,False)

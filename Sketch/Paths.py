@@ -49,6 +49,9 @@ class _Paths:
                 self.path_list[path_id] = _Path(path_id,switchids,self.switches,self.wj)
                 self.path_list[reverse_path_id] =_Path(reverse_path_id,switchids.clone.reverse(),self.switches,self.wj)
 
+    def Initial_Scope(self):
+        for path in self.path_list.values():
+            path.Scope_Count()
     # 查询，给出pathID，返回这条路径上所有sketch的sketch_table
     def Query(self,Path_ID):
         return self.path_list[Path_ID].path_query()
@@ -90,19 +93,20 @@ class _Path:
     def Scope_Count(self):
         total = 0.0
         for sw in self.path:
-            total += 1.0*sw.wk/sw.path_number
+            total += 1.0*sw.ws/sw.path_number
         current = 0.0
         next = 0.0
         for sw in self.path:
-            next = current + 1.0*sw.wk/sw.path_number
+            next = current + 1.0*sw.ws/sw.path_number
             sw.scope[self.path_ID] = [current,next]
             self.scope[sw.switch_ID] = [current,next]
+            current = next
 
     def path_query(self):
         skethes = []
         for switch in self.path:
             skethes.append(switch.Query())
-        return
+        return skethes
     # 更新这个路径上的scope,scope记录在switch上，根据path_list找到该路径上每一个switch并计算更新
     def Scope_Update(self):
         pass
