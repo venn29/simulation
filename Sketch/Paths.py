@@ -73,7 +73,7 @@ class _Path:
         # 存放该path有哪些flow
         self.flow = []
         # 维护一个scope队列，每个元素是一个map，[switchID:[α，β]]
-        self.scope = []
+        self.scope = {}
         for id in switchids:
             self.path.append(switches[int(id)])
             switches[int(id)].path_number += 1
