@@ -27,7 +27,7 @@ class _Paths:
         self.path_list = {}
         self.error_path_list = {}
         # 用来生成id，序号即可
-        self.switch_count = 5
+        self.switch_count = 20
         # 存放路径
         self.path_config = []
         self.switches = []
