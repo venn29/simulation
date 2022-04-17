@@ -25,7 +25,7 @@ class _Paths:
         # 确保每个switch唯一，不会在路径中重复出现,其中放_Path
         # path_list还是用map吧
         self.path_list = {}
-        self.error_path_list = []
+        self.error_path_list = {}
         # 用来生成id，序号即可
         self.switch_count = 5
         # 存放路径
