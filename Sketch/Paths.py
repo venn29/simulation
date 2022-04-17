@@ -23,7 +23,8 @@ scope指[α，β]
 class _Paths:
     def __init__(self,d,wj,path,flows):
         # 确保每个switch唯一，不会在路径中重复出现,其中放_Path
-        self.path_list = []
+        # path_list还是用map吧
+        self.path_list = {}
         self.error_path_list = []
         # 用来生成id，序号即可
         self.switch_count = 5
@@ -42,24 +43,25 @@ class _Paths:
         with open('../Source/path.json', 'r') as fp:
             data = json.loads(fp)
             for item in data.items():
-                path_id = item[0]
+                path_id = int(item[0])
                 switchids = item[1]
-                self.path_list.append(_Path(path_id,switchids,self.switches,self.wj))
-                self.path_list.append(_Path(path_id,switchids.clone.reverse(),self.switches,self.wj))
+                reverse_path_id = path_id+104
+                self.path_list[path_id] = _Path(path_id,switchids,self.switches,self.wj)
+                self.path_list[reverse_path_id] =_Path(reverse_path_id,switchids.clone.reverse(),self.switches,self.wj)
 
     # 查询，给出pathID，返回这条路径上所有sketch的sketch_table
     def Query(self,Path_ID):
-        pass
+        return self.path_list[Path_ID].path_query()
 
     # 查询pathID,返回所有的Path_ID
     def Get_PathID(self):
-        pass
+        return self.path_list.keys()
     # 返回path_list列表
     def Get_Path(self):
-        pass
+        return self.path_list.values()
     # 将scope和packet传递给对应pathID的path，调用_Path.Deliver_Packet(self,scope,packet):
-    def Deliver_Packet(self,pathID,scope,packet):
-        pass
+    def Deliver_Packet(self,pathID,packet):
+        self.path_list[pathID].Deliver_Packet(packet)
 
 
 class _Path:
